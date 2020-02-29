@@ -67,7 +67,7 @@ export default {
     },
     methods:{
         init(){
-            // console.log("ABLOGABLOGABLOG")
+            console.log("ABLOGABLOGABLOG")
             console.log(this.blog)
             let that=this;
             this.$axios.post('/selectInfoByUserId',{
