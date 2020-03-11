@@ -300,7 +300,7 @@ export default {
             let that=this;
             this.$axios.post('/delFavoritesList',{
                 favoritesId:favoriteId
-            }).then(function(res){
+            }).then(function(){
                 // console.log(res)
                 that.getFavoritesList();
             })
