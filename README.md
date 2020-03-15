@@ -1,5 +1,6 @@
 # qingblog
-
+## 博客系统前端部分
+### 基本技术框架：vue+iview+axios+jquery
 ## Project setup
 ```
 npm install
