@@ -26,8 +26,10 @@
                                         {{views}}
                                     </Col>
                                     <Col span="12">
-                                        <a href="#RHSY">#</a>
-                                        SpringMVC,Spring
+                                        <!-- <a href="#RHSY">#</a> -->
+                                        <!-- SpringMVC,Spring -->
+                                        <div style="display:inline" v-if="label[0]">#{{label[0].labelTitle+", "}}</div>
+                                        <div style="display:inline" v-if="label[1]">#{{label[1].labelTitle}}</div>
                                     </Col>
                                 </Row>
                                 <Row style="padding-top:15px;padding-left:25px;">
@@ -59,7 +61,8 @@ export default {
             blogContent:decodeURI(atob(atob(this.blog.blogContent))),
             views:this.blog.views,
             auth:{},
-            imgUrl:''
+            imgUrl:'',
+            label:[]
         }
     },
     mounted () {
@@ -82,6 +85,13 @@ export default {
                 else{
                     that.imgUrl='http://localhost:8080/qingblog/img?id='+that.auth.userImage;
                 }
+            })
+            //博客标签获取
+            this.$axios.post('/selectLabelByBlogId',{
+                'blogId':that.blogId,
+            }).then(function(res){
+                that.label=res.data.data
+                // console.log(that.label)
             })
         },
         viewContent(){

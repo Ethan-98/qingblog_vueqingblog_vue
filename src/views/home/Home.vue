@@ -30,12 +30,12 @@
                             <DropdownItem>北京烤鸭</DropdownItem> -->
                         </DropdownMenu>
                     </Dropdown>
-                    <!-- <BackTop></BackTop> -->
-                    <BackTop :height="80" :bottom="80">
+                    <BackTop></BackTop>
+                    <!-- <BackTop :height="80" :bottom="80">
                         <div class="top">
                             <Icon type="ios-arrow-dropup" />
                         </div>
-                    </BackTop>
+                    </BackTop> -->
                 </Row>
             </Col>
         </Row>

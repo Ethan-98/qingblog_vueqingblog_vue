@@ -15,14 +15,19 @@
                         </div>
                     </Row>
                     <Row>
-                        <Col span="8" style="text-align:left;padding-left:5px">
+                        <Col span="6" style="text-align:left;padding-left:5px">
                             <Icon type="ios-contact-outline" /> {{this.authName}}
                         </Col>
-                        <Col span="8" style="text-align:left">
+                        <Col span="6" style="text-align:left">
                             最后发布于 <Icon type="md-clipboard" />{{this.blog.releaseDate.toString().substr(0,10)}}
                         </Col>
-                        <Col span="8" style="text-align:left">
+                        <Col span="6" style="text-align:left">
                             阅读数 <Icon type="ios-eye" /> {{this.blog.views}}
+                        </Col>
+                        <Col span="6" style="text-align:left">
+                            话题 <Icon type="md-attach" /> 
+                            <div style="display:inline" v-if="labels[0]">#{{labels[0].labelTitle+", "}}</div>
+                            <div style="display:inline" v-if="labels[1]">#{{labels[1].labelTitle}}</div>
                         </Col>
                     </Row>
                 </div>
@@ -111,7 +116,8 @@ export default {
             favoriteList:[],
             value:'',
             newFavoritesName:'',
-            favoritesSelect:''
+            favoritesSelect:'',
+            labels:[]
         }
     },
     components:{
@@ -123,6 +129,7 @@ export default {
         this.updateViews();
         this.starFunction();
         this.thumbsFunction();
+        this.getLabels();
     },
     methods:{
         auth(){
@@ -332,6 +339,16 @@ export default {
             else{
                 that.$Message.error("必须选择一个收藏文件夹！")
             }
+        },
+        getLabels(){
+            let that=this
+            //博客标签获取
+            this.$axios.post('/selectLabelByBlogId',{
+                'blogId':that.blogId,
+            }).then(function(res){
+                that.label=res.data.data
+                // console.log(that.label)
+            })
         }
     }
 }
