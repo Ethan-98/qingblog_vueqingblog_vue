@@ -21,7 +21,7 @@
                                 </FormItem>
                                 <br/>
                                 <FormItem>
-                                    <Button type="primary" @click="updatePwd()">修改密码</Button>
+                                    <Button type="primary" @click="updatePwd()">????</Button>
                                 </FormItem>
                             </Form>
                         </div>
