@@ -38,7 +38,7 @@
                             <DropdownItem name="personal">个人中心</DropdownItem>
                             <DropdownItem name="myBlog">我的创作</DropdownItem>
                             <DropdownItem name="alertInfo">信息更改</DropdownItem>
-                            </DropdownMenu>
+                        </DropdownMenu>
                     </Dropdown>
                 </div>
             </Col>

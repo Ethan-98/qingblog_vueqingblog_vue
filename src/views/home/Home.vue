@@ -8,7 +8,7 @@
                 <br>
             </Col>
             <Col span="14">
-                    <ABlog v-for="(item,index) in blogList" :key="index" :blog="blogList[index]"></ABlog>
+                    <ABlog v-for="(item,index) in blogList" :key="index" :blog="item"></ABlog>
                     <Button @click="getBlogList()" type="primary" long>查看更多<Icon type="ios-arrow-down" /><Icon type="ios-arrow-down" /><Icon type="ios-arrow-down" /></Button>
                 </Col>
             <Col span="6">
@@ -91,7 +91,7 @@ export default {
                 for(item in that.blogs){
                     that.blogList.push(that.blogs[item]);
                 }
-                // console.log(that.blogList)
+                console.log(that.blogList)
                 that.pageNo+=1;
             })
             

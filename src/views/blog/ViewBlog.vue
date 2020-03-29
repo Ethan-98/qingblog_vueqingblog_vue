@@ -32,7 +32,7 @@
                     </Row>
                 </div>
                 <div style="width:100%;margin-top:10px;z-index:-1;position:relative;">
-                    <mavon-editor :toolbars="markdownOption" v-model="this.doc" :subfield="false" :toolbarsFlag="false" defaultOpen="preview" :boxShadow="false"/>
+                    <mavon-editor :toolbars="markdownOption" v-model="doc" :subfield="false" :toolbarsFlag="false" defaultOpen="preview" :boxShadow="false"/>
                 </div>
                 <Row style="text-align:left;background:#FBFBFB;padding-top:15px;padding-bottom:15px">
                     <!-- 点赞按钮 -->
@@ -83,7 +83,7 @@
                             </div>
                         </Col>
                         <Col span="22">
-                            <div style="margin-left:30px;margin-top:12px;margin-bottom:5px">{{this.authName}}</div>
+                            <div style="margin-left:30px;margin-top:12px;margin-bottom:5px">{{authName}}</div>
                             <div style="margin-left:30px">发布了{{authBlogCount}}篇文章、获赞数 {{1}}、访问量 {{1}}</div>
                         </Col>
                     </Row>
@@ -140,8 +140,9 @@ export default {
             }).then(function(res){
                 // console.log(res.data)
                 that.blog=res.data.data;
+                console.log(that.blog)
                 that.doc=decodeURI(atob(atob(that.blog.blogContent)));
-                that.$axios.post('/selectInfo',{
+                that.$axios.post('/selectInfoByUserId',{
                     userId:that.blog.userId
                     }).then(function(res){
                         // console.log(res.data)

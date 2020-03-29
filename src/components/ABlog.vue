@@ -54,12 +54,12 @@ export default {
     },
     data(){
         return{
-            blogId:this.blog.blogId,
-            userId:this.blog.userId,
-            releaseDate:this.blog.releaseDate,
-            blogTitle:this.blog.blogTitle,
-            blogContent:decodeURI(atob(atob(this.blog.blogContent))),
-            views:this.blog.views,
+            blogId:0,
+            userId:0,
+            releaseDate:'',
+            blogTitle:'',
+            blogContent:'',
+            views:0,
             auth:{},
             imgUrl:'',
             label:[]
@@ -67,20 +67,28 @@ export default {
     },
     mounted () {
         this.init();
+        // console.log(this.blog)
     },
     methods:{
         init(){
-            // console.log("ABLOGABLOGABLOG")
             // console.log(this.blog)
             let that=this;
+            // console.log(this.blog.blogContent)
+            this.blogId=this.blog.blogId,
+            this.userId=this.blog.userId,
+            this.releaseDate=this.blog.releaseDate,
+            this.blogTitle=this.blog.blogTitle,
+            this.blogContent = decodeURI(atob(atob(this.blog.blogContent)));
+            this.views=this.blog.views,
+            // console.log(this.blogContent)
             this.$axios.post('/selectInfoByUserId',{
                 'userId':this.blog.userId,
             }).then(function (res) {
-                // console.log(res)
+                // console.log(res.data)
                 that.auth=res.data;
                 // console.log(that.auth.userImage)
                 if(that.auth.userImage==null){
-                    that.imgUrl='http://localhost:8080/qingblog/img?id=5e59167dbfd99045539dd9f0';
+                    that.imgUrl='http://localhost:8080/qingblog/img?id=5e80428c61e91666ed9d5718';
                 }
                 else{
                     that.imgUrl='http://localhost:8080/qingblog/img?id='+that.auth.userImage;

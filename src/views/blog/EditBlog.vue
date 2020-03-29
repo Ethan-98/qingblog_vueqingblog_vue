@@ -174,7 +174,7 @@ export default {
       // console.log("encodeURI"+btoa(encodeURI(this.markdown)));
       let content = btoa(encodeURI(this.markdown));
       let that=this;
-      this.$axios.post('upLoadMarkdown',{
+      this.$axios.post('/upLoadMarkdown',{
         'blogTitle' : that.title,
         'blogContent' : content,
         'blogCategory':that.blogCategory
