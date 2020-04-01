@@ -76,6 +76,7 @@ export default {
     },
     methods: {    
         handleSubmit (name) {
+            let that=this;
             this.$refs[name].validate((valid) => {
                 if (valid) {
                     // console.log("PWD:" +this.formCustom.passwd)
@@ -90,13 +91,17 @@ export default {
                             that.$router.push('/')
                         }
                         else{
-                            that.$Message.error('Fail!');
+                            that.$Message.error(res.data.msg)
                         }
-                    })
+                    }).catch((error)=>{
+                        that.$Message.error(error.data.msg)
+                    });
                 } else {
                     this.$Message.error('Fail!');
                 }
-            })
+            }).catch((error)=>{
+                that.$Message.error(error.data.msg)
+            });
         },
         handleReset (name) {
             this.$refs[name].resetFields();

@@ -138,30 +138,60 @@ export default {
             this.$axios.post('/viewBlog',{
                 blogId:that.blogId
             }).then(function(res){
-                // console.log(res.data)
-                that.blog=res.data.data;
-                console.log(that.blog)
-                that.doc=decodeURI(atob(atob(that.blog.blogContent)));
-                that.$axios.post('/selectInfoByUserId',{
-                    userId:that.blog.userId
+                if(res.data.status==200){
+                    // console.log(res.data)
+                    that.blog=res.data.data;
+                    // console.log(that.blog)
+                    that.doc=decodeURI(atob(atob(that.blog.blogContent)));
+                    that.$axios.post('/selectInfoByUserId',{
+                        userId:that.blog.userId
+                        }).then(function(res){
+                            if(res.data.status==200){
+                                // console.log(res.data)
+                                // console.log(that)
+                                that.authName=res.data.userName,
+                                that.imgUrl='http://localhost:8080/qingblog/img?id='+res.data.userImage;
+                                }
+                                else{
+                                    that.$Message.error(res.data.msg)
+                                }
+                        }).catch((error)=>{
+                            that.$Message.error(error.data.msg)
+                        });
+
+                    that.$axios.post('/getAuthBlogCount',{
+                        userId:that.blog.userId
                     }).then(function(res){
-                        // console.log(res.data)
-                        // console.log(that)
-                        that.authName=res.data.userName,
-                        that.imgUrl='http://localhost:8080/qingblog/img?id='+res.data.userImage;
-                })
-                that.$axios.post('/getAuthBlogCount',{
-                    userId:that.blog.userId
-                }).then(function(res){
-                    // console.log(res)
-                    that.authBlogCount=res.data.data;
-                })
+                        if(res.data.status==200){
+                            // console.log(res)
+                            that.authBlogCount=res.data.data;
+                        }
+                        else{
+                            that.$Message.error(res.data.msg)
+                        }
+                    }).catch((error)=>{
+                        that.$Message.error(error.data.msg)
+                    });
+                }
+                else{
+                    that.$Message.error(res.data.msg)
+                }
             })
         },
         updateViews(){
+            let that=this;
             this.$axios.post('/updateViews',{
                 blogId:this.blogId
-            }).then(function(){})
+            }).then(function(res){
+                if(res){
+                    console.log(res)
+                }
+                else{
+                    that.$Message.error(res.data.msg)
+                }
+            }).catch((error)=>{
+                that.$Message.error(error.data.msg)
+            });
         },
         //检查点赞状态
         thumbsFunction(){
@@ -180,7 +210,12 @@ export default {
                         that.thumbsText='点赞'
                     }
                 }
-            })
+                else{
+                    that.$Message.error(res.data.msg)
+                }
+            }).catch((error)=>{
+                that.$Message.error(error.data.msg)
+            });
             // if(this.thumbs=='ios-thumbs-up-outline'){
             //     this.thumbs='md-thumbs-up';
             //     this.thumbsText='已点赞'
@@ -198,16 +233,23 @@ export default {
             this.$axios.post('/selectStarStatus',{
                 'blogId':that.blogId
             }).then(function(res){
-                // console.log(res.data.data)
-                if(res.data.data!=0){
-                    that.star='md-star';
-                    that.starText='已收藏';
+                if(res.data.status==200){
+                    // console.log(res.data.data)
+                    if(res.data.data!=0){
+                        that.star='md-star';
+                        that.starText='已收藏';
+                    }
+                    else{
+                        that.star='md-star-outline';
+                        that.starText='收藏';
+                    }
                 }
                 else{
-                    that.star='md-star-outline';
-                    that.starText='收藏';
+                    that.$Message.error(res.data.msg)
                 }
-            })
+            }).catch((error)=>{
+                that.$Message.error(error.data.msg)
+            });
             // if(this.star=='md-star-outline'){
             //     this.star='md-star';
             //     this.starText='已收藏';
@@ -231,10 +273,17 @@ export default {
                 this.modal1 = true;
                 let that=this;
                 this.$axios.post('/getFavoritesList').then(function(res){
-                    // console.log("GETFAVORITESLIST")
-                    // console.log(res);
-                    that.favoriteList=res.data.data;
-                })
+                    if(res.data.status==200){
+                        // console.log("GETFAVORITESLIST")
+                        // console.log(res);
+                        that.favoriteList=res.data.data;
+                    }
+                    else{
+                        that.$Message.error(res.data.msg)
+                    }
+                }).catch((error)=>{
+                    that.$Message.error(error.data.msg)
+                });
             }
             else{//已收藏状态，则取消此收藏
                 let that=this;
@@ -250,7 +299,9 @@ export default {
                     else{
                         that.$Message.error(res.data.msg)
                     }
-                })
+                }).catch((error)=>{
+                    that.$Message.error(error.data.msg)
+                });
             }
         },
         //点击点赞按钮，若已点赞，则取消，未点赞，则点赞
@@ -266,7 +317,12 @@ export default {
                         that.thumbs='md-thumbs-up';
                         that.thumbsText='已点赞'
                     }
-                })
+                    else{
+                        that.$Message.error(res.data.msg)
+                    }
+                }).catch((error)=>{
+                    that.$Message.error(error.data.msg)
+                });
             }
             //已点赞
             else{
@@ -278,7 +334,12 @@ export default {
                         that.thumbs='ios-thumbs-up-outline';
                         that.thumbsText='点赞'
                     }
-                })
+                    else{
+                        that.$Message.error(res.data.msg)
+                    }
+                }).catch((error)=>{
+                    that.$Message.error(error.data.msg)
+                });
             }
         },
         newFavoritesListOk(){
@@ -288,7 +349,7 @@ export default {
                     favoritesName:that.newFavoritesName
                 }).then(function(res){
                     // console.log(res);
-                    if(res.data.status=="200"){
+                    if(res.data.status==200){
                         that.getFavoritesList();
                     }
                     else{
@@ -308,10 +369,17 @@ export default {
             let that=this;
             this.$axios.post('/delFavoritesList',{
                 favoritesId:favoriteId
-            }).then(function(){
-                // console.log(res)
-                that.getFavoritesList();
-            })
+            }).then(function(res){
+                if(res.data.status==200){
+                    // console.log(res)
+                    that.getFavoritesList();
+                }
+                else{
+                    that.$Message.error(res.data.msg)
+                }
+            }).catch((error)=>{
+                that.$Message.error(error.data.msg)
+            });
         },
         newFavoritesListCancel(){
 
@@ -327,7 +395,7 @@ export default {
                     'blogTitle':that.blog.blogTitle
                 }).then(function(res){
                     // console.log(res)
-                    if(res.data.status=="200"){
+                    if(res.data.status==200){
                         that.$Message.success("已收藏！");
                         that.star='md-star';
                         that.starText='已收藏';
@@ -335,7 +403,9 @@ export default {
                     else{
                         that.$Message.error(res.data.msg)
                     }
-                })
+                }).catch((error)=>{
+                    that.$Message.error(error.data.msg)
+                });
             }
             else{
                 that.$Message.error("必须选择一个收藏文件夹！")
@@ -347,9 +417,16 @@ export default {
             this.$axios.post('/selectLabelByBlogId',{
                 'blogId':that.blogId,
             }).then(function(res){
-                that.label=res.data.data
-                // console.log(that.label)
-            })
+                if(res.data.status==200){
+                    that.label=res.data.data
+                    // console.log(that.label)
+                }
+                else{
+                    that.$Message.error(res.data.msg)
+                }
+            }).catch((error)=>{
+                that.$Message.error(error.data.msg)
+            });
         }
     }
 }

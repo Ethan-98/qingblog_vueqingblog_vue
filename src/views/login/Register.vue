@@ -85,30 +85,32 @@ export default {
         },
         methods: {
             handleSubmit (name) {
+                let that=this;
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        let that=this;
-                        this.$axios.post('userRegister',{
+                        that.$axios.post('userRegister',{
                             'userName':that.formValidate.name,
                             'userMail':that.formValidate.mail,
                             'userTel':that.formValidate.tel,
                             'userPassword':that.formValidate.pwd
-                        }).then(function(response){
+                        }).then(function(res){
                             // console.log(response)
-                            if(response.data.status==200){
+                            if(res.data.status==200){
                                 that.$Message.success('修改成功，请登录！');
                                 that.$router.push('/login');
                             }
                             else{
-                                alert(response.data.msg);
+                                that.$Message.error(res.data.msg)
                             }
                         }).catch((error)=>{
-                            console.log(error)
-                        })
+                            that.$Message.error(error.data.msg)
+                        });
                     } else {
                         this.$Message.error('Fail!');
                     }
-                })
+                }).catch((error)=>{
+                    that.$Message.error(error.data.msg)
+                });
             },
             handleReset (name) {
                 this.$refs[name].resetFields();

@@ -84,23 +84,37 @@ export default {
             this.$axios.post('/selectInfoByUserId',{
                 'userId':this.blog.userId,
             }).then(function (res) {
-                // console.log(res.data)
-                that.auth=res.data;
-                // console.log(that.auth.userImage)
-                if(that.auth.userImage==null){
-                    that.imgUrl='http://localhost:8080/qingblog/img?id=5e80428c61e91666ed9d5718';
+                if(res.data.status==200){
+                    // console.log(res.data)
+                    that.auth=res.data.data;
+                    // console.log(that.auth.userImage)
+                    if(that.auth.userImage==null){
+                        that.imgUrl='http://localhost:8080/qingblog/img?id=5e80428c61e91666ed9d5718';
+                    }
+                    else{
+                        that.imgUrl='http://localhost:8080/qingblog/img?id='+that.auth.userImage;
+                    }
                 }
                 else{
-                    that.imgUrl='http://localhost:8080/qingblog/img?id='+that.auth.userImage;
+                    that.$Message.error(res.data.msg)
                 }
-            })
+            }).catch((error)=>{
+                that.$Message.error(error.data.msg)
+            });
             //博客标签获取
             this.$axios.post('/selectLabelByBlogId',{
                 'blogId':that.blogId,
             }).then(function(res){
-                that.label=res.data.data
-                // console.log(that.label)
-            })
+                if(res.data.status==200){
+                    that.label=res.data.data
+                    // console.log(that.label)
+                }
+                else{
+                    that.$Message.error(res.data.msg)
+                }
+            }).catch((error)=>{
+                that.$Message.error(error.data.msg)
+            });
         },
         viewContent(){
             let that=this;

@@ -65,29 +65,30 @@
         },
         methods: {
             handleSubmit(name) {
+                let that=this;
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        let that=this;
-                        this.$axios.post('userLogin',{
+                        that.$axios.post('userLogin',{
                             "userMail":that.formInline.email,
                             "userPassword":that.formInline.password,
-                        }).then(function (response) {
-                            if(response.data.status==200){
+                        }).then(function (res) {
+                            if(res.data.status==200){
                                 // alert("登录成功！");
                                 that.$router.push('/')
                             }
                             else{
-                                console.log(response);
-                                alert(response.data.msg);
+                                that.$Message.error(res.data.msg)
                             }
                         }).catch((error)=>{
-                            console.log(error)
-                        })
+                            that.$Message.error(error.data.msg)
+                        });
                         // this.$Message.success('Success!');
                     } else {
                         this.$Message.error('Fail!');
                     }
-                })
+                }).catch((error)=>{
+                    that.$Message.error(error.data.msg)
+                });
             },
             register(){
                 this.$router.push('/register')

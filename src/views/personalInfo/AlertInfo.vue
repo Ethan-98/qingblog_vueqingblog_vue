@@ -91,11 +91,18 @@ export default {
         init(){
             let that=this;
             this.$axios.get('/selectInfo').then(function (res) {
-                // console.log(res)
-                that.namePH=res.data.userName;
-                that.mailPH=res.data.userMail;
-                that.telPH=res.data.userTel;
-            })
+                if(res.data.status==200){
+                    // console.log(res)
+                    that.namePH=res.data.data.userName;
+                    that.mailPH=res.data.data.userMail;
+                    that.telPH=res.data.data.userTel;
+                    }
+                    else{
+                        that.$Message.error(res.data.msg)
+                    }
+            }).catch((error)=>{
+                that.$Message.error(error.data.msg)
+            });
         },
         handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
@@ -106,19 +113,19 @@ export default {
                             'userMail':that.formValidate.mail,
                             'userTel':that.formValidate.tel,
                             // 'userPassword':that.formValidate.pwd
-                        }).then(function(response){
+                        }).then(function(res){
                             // console.log(response)
                             // console.log(response.data)
-                            if(response.data.status==200){
+                            if(res.data.status==200){
                                 that.$Message.success('Success!');
                                 that.$router.push('/');
                             }
                             else{
-                                alert(response.data.msg);
+                                that.$Message.error(res.data.msg)
                             }
                         }).catch((error)=>{
-                            console.log(error)
-                        })
+                            that.$Message.error(error.data.msg)
+                        });
                     } else {
                         this.$Message.error('Fail!');
                     }

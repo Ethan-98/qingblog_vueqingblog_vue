@@ -87,32 +87,40 @@ export default {
         getUserInfo(){
             let that=this;
             this.$axios.get('/selectInfo').then(function (res) {
-                console.log(res)
-                that.user=res.data;
-                if(that.user.userState==0){
-                    that.userState='正常'
-                }
-                else if(that.user.userState==1){
-                    that.userState='限制'
-                }
-                else if(that.user.userState==2){
-                    that.userState='锁定'
+                if(res.data.status==200){
+                    // console.log(res)
+                    that.user=res.data.data;
+                    if(that.user.userState==0){
+                        that.userState='正常'
+                    }
+                    else if(that.user.userState==1){
+                        that.userState='限制'
+                    }
+                    else if(that.user.userState==2){
+                        that.userState='锁定'
+                    }
+                    else{
+                        that.userState='注销'
+                    }
+                    if(that.user.userImage==''){
+                        that.imgUrl='http://localhost:8080/qingblog/img?id=5e58d5dc0141020e17edf3e1';
+                    }
+                    else{
+                        that.imgUrl='http://localhost:8080/qingblog/img?id='+that.user.userImage;
+                    }
                 }
                 else{
-                    that.userState='注销'
+                    that.$Message.error(res.data.msg)
                 }
-                if(that.user.userImage==''){
-                    that.imgUrl='http://localhost:8080/qingblog/img?id=5e58d5dc0141020e17edf3e1';
-                }
-                else{
-                    that.imgUrl='http://localhost:8080/qingblog/img?id='+that.user.userImage;
-                }
-            })
+            }).catch((error)=>{
+                that.$Message.error(error.data.msg)
+            });
         },
         handleUpload(file){
             // console.log(file)
             var formdata = new FormData();
             formdata.append("file", file);
+            let that=this;
             this.$axios({
                 url: "upLoadProfile",
                 method: "post",
@@ -120,7 +128,14 @@ export default {
                 data: formdata,
                 headers: { "Content-Type": "multipart/form-data" }
             }).then(res => {
-                console.log(res);
+                if(res.data.status==200){
+                    console.log(res);
+                }
+                else{
+                    that.$Message.error(res.data.msg)
+                }
+            }).catch((error)=>{
+                that.$Message.error(error.data.msg)
             });
         }
     }

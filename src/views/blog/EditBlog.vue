@@ -152,12 +152,19 @@ export default {
           headers: { "Content-Type": "multipart/form-data" }
         }).then(res => {
           // console.log(res);
-          for (var i in res.data.data) {
-            // console.log(res.data.data)
-            // console.log(i)
-            that.$refs.md.$img2Url(res.data.data[i]['position'], res.data.data[i]['url']);
+          if(res.data.status==200){
+            for (var i in res.data.data) {
+              // console.log(res.data.data)
+              // console.log(i)
+              that.$refs.md.$img2Url(res.data.data[i]['position'], res.data.data[i]['url']);
+            }
+            that.upLoad()
           }
-          that.upLoad()
+          else{
+              that.$Message.error(res.data.msg)
+          }
+        }).catch((error)=>{
+          that.$Message.error(error.data.msg)
         });
       }
       else{
@@ -187,25 +194,39 @@ export default {
             'selectedLabel':that.selectedLabel
           }).then(function(res){
             console.log(res)
-          })
+          }).catch((error)=>{
+            that.$Message.error(error.data.msg)
+          });
           that.$Message.success('上传成功！');
           that.$router.push('/');
         }
-      })
+        else{
+            that.$Message.error(res.data.msg)
+        }
+      }).catch((error)=>{
+        that.$Message.error(error.data.msg)
+      });
     },
     getAllLabel(){
       let that=this;
       this.$axios.post('/getAllLabel').then(function(res){
-        // console.log(res)
-        that.labels=res.data.data;
-        // console.log(res.data.data)
-        // console.log(that.labels)
-        // for(var i = 0; i < that.labels.length; i++) {
-        //   // console.log(that.labels[i])
-        //   that.labels[i].selected='default';
-        // }
-        that.labels = res.data.data
-      })
+        if(res.data.status==200){
+          // console.log(res)
+          that.labels=res.data.data;
+          // console.log(res.data.data)
+          // console.log(that.labels)
+          // for(var i = 0; i < that.labels.length; i++) {
+          //   // console.log(that.labels[i])
+          //   that.labels[i].selected='default';
+          // }
+          that.labels = res.data.data
+        }
+        else{
+          that.$Message.error(res.data.msg)
+        }
+      }).catch((error)=>{
+        that.$Message.error(error.data.msg)
+      });
     },
     // changeLabelState(index){
       // console.log(this.labels[index].selected)
@@ -242,9 +263,16 @@ export default {
         'labelTitle':that.selfLabelTitle,
         'labelDescription':that.selfLabelDescription
       }).then(function(res){
-        console.log(res)
-        that.getAllLabel()
-      })
+        if(res.data.status==200){
+          console.log(res)
+          that.getAllLabel()
+        }
+        else{
+          that.$Message.error(res.data.msg)
+        }
+      }).catch((error)=>{
+        that.$Message.error(error.data.msg)
+      });
     },
     selectCategory(){
 

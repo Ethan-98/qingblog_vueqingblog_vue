@@ -77,23 +77,30 @@ export default {
         },
         getBlogList(){
             var that=this;
-            this.$axios.post('viewAllBlogList',{
+            this.$axios.post('/viewAllBlogList',{
                 'pageNo':that.pageNo,
                 'pageSize':that.pageSize
             }).then(function(res){
-                // console.log("______________________")
-                // console.log(res.data)
-                that.blogs=res.data.data;
-                that.blogNum=res.data.data.length;
-                that.blogCount+=that.blogNum
-                // that.blogList.push(that.blogs);
-                let item;
-                for(item in that.blogs){
-                    that.blogList.push(that.blogs[item]);
+                if(res.data.status==200){
+                    // console.log("______________________")
+                    // console.log(res.data)
+                    that.blogs=res.data.data;
+                    that.blogNum=res.data.data.length;
+                    that.blogCount+=that.blogNum
+                    // that.blogList.push(that.blogs);
+                    let item;
+                    for(item in that.blogs){
+                        that.blogList.push(that.blogs[item]);
+                    }
+                    console.log(that.blogList)
+                    that.pageNo+=1;
+                    }
+                else{
+                    that.$Message.error(res.data.msg)
                 }
-                console.log(that.blogList)
-                that.pageNo+=1;
-            })
+            }).catch((error)=>{
+                that.$Message.error(error.data.msg)
+            });
             
         }
     }
