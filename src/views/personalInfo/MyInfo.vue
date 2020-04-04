@@ -128,10 +128,7 @@ export default {
                 data: formdata,
                 headers: { "Content-Type": "multipart/form-data" }
             }).then(res => {
-                if(res.data.status==200){
-                    console.log(res);
-                }
-                else{
+                if(!res.data.status==200){
                     that.$Message.error(res.data.msg)
                 }
             }).catch((error)=>{

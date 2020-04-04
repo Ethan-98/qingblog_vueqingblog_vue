@@ -141,16 +141,13 @@ export default {
                 if(res.data.status==200){
                     // console.log(res.data)
                     that.blog=res.data.data;
-                    // console.log(that.blog)
                     that.doc=decodeURI(atob(atob(that.blog.blogContent)));
                     that.$axios.post('/selectInfoByUserId',{
-                        userId:that.blog.userId
+                        'userId':that.blog.userId
                         }).then(function(res){
                             if(res.data.status==200){
-                                // console.log(res.data)
-                                // console.log(that)
-                                that.authName=res.data.userName,
-                                that.imgUrl='http://localhost:8080/qingblog/img?id='+res.data.userImage;
+                                that.authName=res.data.data.userName,
+                                that.imgUrl='http://localhost:8080/qingblog/img?id='+res.data.data.userImage;
                                 }
                                 else{
                                     that.$Message.error(res.data.msg)
@@ -160,7 +157,7 @@ export default {
                         });
 
                     that.$axios.post('/getAuthBlogCount',{
-                        userId:that.blog.userId
+                        'userId':that.blog.userId
                     }).then(function(res){
                         if(res.data.status==200){
                             // console.log(res)

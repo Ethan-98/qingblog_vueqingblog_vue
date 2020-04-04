@@ -43,7 +43,7 @@ export default {
                     callback(new Error("Incorrect Tel length format"));
                 }
                 else {
-                    console.log(val);
+                    // console.log(val);
                     var status=true;
                     var val;
                     for(val in value){

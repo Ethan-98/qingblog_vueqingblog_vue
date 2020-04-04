@@ -92,7 +92,7 @@ export default {
                     for(item in that.blogs){
                         that.blogList.push(that.blogs[item]);
                     }
-                    console.log(that.blogList)
+                    // console.log(that.blogList)
                     that.pageNo+=1;
                     }
                 else{
