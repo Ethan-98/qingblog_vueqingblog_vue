@@ -188,12 +188,12 @@ export default {
       }).then(res=>{
         // console.log(res);
         if(res.data.status==200){
-          console.log(that.selectedLabel)
+          // console.log(that.selectedLabel)
           that.$axios.post('/addLabel',{
             'blogId':res.data.data,
             'selectedLabel':that.selectedLabel
-          }).then(function(res){
-            console.log(res)
+          }).then(function(){
+            // console.log(res)
           }).catch((error)=>{
             that.$Message.error(error.data.msg)
           });
@@ -264,7 +264,7 @@ export default {
         'labelDescription':that.selfLabelDescription
       }).then(function(res){
         if(res.data.status==200){
-          console.log(res)
+          // console.log(res)
           that.getAllLabel()
         }
         else{
@@ -278,8 +278,8 @@ export default {
 
     },
 
-    handle(item){
-      console.log(item)
+    handle(){
+      // console.log(item)
     }
   }
 };

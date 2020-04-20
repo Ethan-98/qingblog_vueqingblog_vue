@@ -6,18 +6,18 @@
                     <Col span="6" offset="8">
                         <div style="width:100%;padding-top:50%">
                             <Form ref="formCustom" :model="formCustom" :rules="ruleCustom" :label-width="80">
-                            <FormItem label="Password" prop="passwd">
+                            <FormItem label="密码" prop="passwd">
                                 <Input type="password" v-model="formCustom.passwd"></Input>
                             </FormItem>
-                            <FormItem label="Confirm" prop="passwdCheck">
+                            <FormItem label="确认密码" prop="passwdCheck">
                                 <Input type="password" v-model="formCustom.passwdCheck"></Input>
                             </FormItem>
                             <!-- <FormItem label="Age" prop="age">
                                 <Input type="text" v-model="formCustom.age" number></Input>
                             </FormItem> -->
                             <FormItem>
-                                <Button type="primary" @click="handleSubmit('formCustom')">Submit</Button>
-                                <Button @click="handleReset('formCustom')" style="margin-left: 8px">Reset</Button>
+                                <Button type="primary" @click="handleSubmit('formCustom')">提交</Button>
+                                <Button @click="handleReset('formCustom')" style="margin-left: 8px">重置</Button>
                             </FormItem>
                         </Form>
                         </div>

@@ -13,7 +13,7 @@
                 </Row>
             </Col>
             <Col span="4">
-                <div class="navTxt">
+                <div @click="getHot()"  class="navTxt">
                     热点
                 </div>
             </Col>
@@ -71,6 +71,9 @@
                 } else {
                     this.$router.push('/alertInfo')
                 }
+            },
+            getHot(){
+                this.$router.push('/')
             }
         }
     }

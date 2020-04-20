@@ -6,22 +6,22 @@
                     <Col span="6" offset="8">
                         <div style="width:100%;padding-top:50%">
                             <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
-                                <FormItem label="Name" prop="name">
+                                <FormItem label="用户名" prop="name">
                                     <Input v-model="formValidate.name" :placeholder="namePH"></Input>
                                 </FormItem>
-                                <FormItem label="E-mail" prop="mail">
+                                <FormItem label="邮箱" prop="mail">
                                     <Input v-model="formValidate.mail" :placeholder="mailPH"></Input>
                                 </FormItem>
-                                <FormItem label="Tel" prop="tel">
+                                <FormItem label="电话" prop="tel">
                                     <Input v-model="formValidate.tel" :placeholder="telPH"></Input>
                                 </FormItem>
                                 <FormItem>
-                                    <Button type="primary" @click="handleSubmit('formValidate')">Submit</Button>
-                                    <Button @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
+                                    <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
+                                    <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
                                 </FormItem>
                                 <br/>
                                 <FormItem>
-                                    <Button type="primary" @click="updatePwd()">????</Button>
+                                    <Button type="primary" @click="updatePwd()">修改密码</Button>
                                 </FormItem>
                             </Form>
                         </div>
@@ -44,7 +44,8 @@ export default {
                     callback(new Error("Incorrect Tel length format"));
                 }
                 else {
-                    // console.log(val);
+                    // console.log(val);‘
+                    
                     var status=true;
                     var val;
                     for(val in value){

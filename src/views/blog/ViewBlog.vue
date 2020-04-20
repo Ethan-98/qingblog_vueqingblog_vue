@@ -88,6 +88,82 @@
                         </Col>
                     </Row>
                 </Row>
+                <Row>
+                    <Col span="24" style="padding:10px;background:#FBFBFB;">
+                        <Input v-model="commentContent" type="primary" style="width: 100%;"><Button type="primary" @click="addComment()" slot="append">发表</Button></Input>
+                    </Col>
+                </Row>
+                <AComment v-for="(item,index) in commentList" :key="index" :comment="item"></AComment>
+                <!-- <div>
+                    <Row>
+                        <Col span="24" style="padding:10px;background:#FBFBFB;">
+                            <Input prefix="ios-contact" placeholder="Enter Comment..." style="width: 100%;" />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span="24" style="background:#FBFBFB;">
+                            <Card dis-hover :bordered="false" style="background:#FBFBFB;padding:0px;margin:0px">
+                                <Row style="width:100%;padding:0px">
+                                    <Col span="2">
+                                        <div>
+                                            <img :src="imgUrl" style="height:30px;width:30px;border-radius:15px;border-color:#000">
+                                        </div>
+                                    </Col>
+                                    <Col span="20">
+                                        <Row>
+                                            <div style="float:left;padding-left:10px">{{authName}}</div>
+                                        </Row>
+                                        <Row>
+                                            <div style="float:left;padding-left:10px;">测试回复内容测试回复内容测试回复内容回复内容测试回复内容</div>
+                                        </Row>
+                                        <Row style="padding-bottom:0px">
+                                            <Col span="12">
+                                                <div style="float:left"><Icon type="md-calendar" />{{this.blog.releaseDate.toString().substr(0,10)}}</div>
+                                            </Col>
+                                            <Col span="10">
+                                                <div style="float:right;"><Icon type="ios-chatboxes-outline" />回复</div>
+                                            </Col>
+                                            <Col span="2">
+                                                <div style="float:right"><Icon type="ios-thumbs-up-outline" />赞</div>
+                                            </Col>
+                                        </Row>
+                                        二级回复
+                                        <Divider style="margin-top:10px;margin-bottom:10px"/>                                        
+                                        <Row style="padding-top:0px">
+                                            <Row style="width:100%">
+                                                <Col span="2">
+                                                    <div>
+                                                        <img :src="imgUrl" style="height:30px;width:30px;border-radius:15px;border-color:#000">
+                                                    </div>
+                                                </Col>
+                                                <Col span="22">
+                                                    <Row>
+                                                        <div style="float:left;padding-left:10px">{{authName}}</div>
+                                                    </Row>
+                                                    <Row>
+                                                        <div style="float:left;padding-left:10px">测试回复内容测试回复内容测试回复内容测试回复内容测试回复内容</div>
+                                                    </Row>
+                                                    <Row>
+                                                        <Col span="12">
+                                                            <div style="float:left"><Icon type="md-calendar" />{{this.blog.releaseDate.toString().substr(0,10)}}</div>
+                                                        </Col>
+                                                        <Col span="10">
+                                                            <div style="float:right;"><Icon type="ios-chatboxes-outline" />回复</div>
+                                                        </Col>
+                                                        <Col span="2">
+                                                            <div style="float:right"><Icon type="ios-thumbs-up-outline" />赞</div>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                            </Row>
+                                        </Row>
+                                        二级回复
+                                    </Col>
+                                </Row>
+                            </Card>
+                        </Col>
+                    </Row>
+                </div> -->
             </Col>
             <Col span="5"><br></Col>
         </Row>
@@ -96,6 +172,7 @@
 
 <script>
 import Navigation from '@/components/Navigation.vue'
+import AComment from '@/components/AComment.vue'
 export default {
     data(){
         return{
@@ -117,11 +194,17 @@ export default {
             value:'',
             newFavoritesName:'',
             favoritesSelect:'',
-            labels:[]
+            labels:[],
+            commentList:[],
+            comments:[],
+            pageNo:1,
+            pageSize:5,
+            commentContent:''
         }
     },
     components:{
         Navigation,
+        AComment
     },
     mounted(){
         this.auth();
@@ -130,6 +213,7 @@ export default {
         this.starFunction();
         this.thumbsFunction();
         this.getLabels();
+        this.getComment();
     },
     methods:{
         auth(){
@@ -180,8 +264,8 @@ export default {
             this.$axios.post('/updateViews',{
                 blogId:this.blogId
             }).then(function(res){
-                if(res){
-                    console.log(res)
+                if(res.data.status==200){
+                    // console.log(res)
                 }
                 else{
                     that.$Message.error(res.data.msg)
@@ -417,6 +501,41 @@ export default {
                 if(res.data.status==200){
                     that.label=res.data.data
                     // console.log(that.label)
+                }
+                else{
+                    that.$Message.error(res.data.msg)
+                }
+            }).catch((error)=>{
+                that.$Message.error(error.data.msg)
+            });
+        },
+        getComment(){
+            let that=this;
+            this.$axios.get('/comment/'+that.blogId,{
+                params: {
+                    'pageNo':that.pageNo,
+                    'pageSize':that.pageSize,
+                }
+            }).then(function(res){
+                if(res.data.status==200){
+                    // console.log(res.data)
+                    that.commentList=res.data.data
+                }
+                else{
+                    that.$Message.error(res.data.msg)
+                }
+            }).catch((error)=>{
+                that.$Message.error(error.data.msg)
+            });
+        },
+        addComment(){
+            let that=this;
+            this.$axios.post('/comment/insert',{
+                'blogId':that.blogId,
+                'commentContent':that.commentContent,
+            }).then(function(res){
+                if(res.data.status==200){
+                    that.$Message.success("评论发表成功！")
                 }
                 else{
                     that.$Message.error(res.data.msg)
